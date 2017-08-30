@@ -68,12 +68,6 @@ setInterval(run_korbit_ticker, 3000)
 function bithum_ticker_parse(data){
 
     return _.each(data, (d) => d.last = d.closing_price)
-    // Object.keys(data).forEach(function (key) {
-    //     data[key].last = data[key].closing_price;
-    //     delete data[key].closing_price;
-    // });
-    // console.log(data);
-    // return data
 }
 
 function bithumb_ticker_all(){
@@ -97,7 +91,6 @@ let bittrex_ticker = {
 function run_bittrex_ticker(){
     request('https://bittrex.com/api/v1.1/public/getmarketsummaries', function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            // console.log(body) // Print the google web page.
             bittrex_ticker = JSON.parse(body)
         }
     })
@@ -107,14 +100,12 @@ function run_bittrex_ticker(){
 run_bittrex_ticker()
 setInterval(run_bittrex_ticker, 3000)
 
-// console.log(cwd())
 
 app.use('/', express.static(cwd() + '/build/'))
 app.use(morgan('combined'))
 
 app.get('/bithumb/ticker', function(req,res){
     res.header('Access-Control-Allow-Origin', "*")
-    // console.log(bithumb_ticker)
     res.send(bithumb_ticker)
 })
 
