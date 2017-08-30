@@ -9,8 +9,6 @@ const request = require('request')
 const _ = require('lodash')
 
 
-// const myMorgan = morgan('combined', { skip : function(req, res) { return res.statusCode < 400 } })
-
 let port = 3000
 
 
@@ -121,18 +119,6 @@ app.get('/bithumb/ticker', function(req,res){
 })
 
 app.get('/korbit/ticker', function(req,res){
-    // res.header('Access-Control-Allow-Origin', "*")
-    //
-    // const callback = (resp) => {
-    //     resp.on('data', function (chunk){
-    //         str += chunk;
-    //     })
-    //
-    //     resp.on('end', function() {
-    //         console.log(str)
-    //         res.send(str)
-    //     })
-    // }
 
     res.header('Access-Control-Allow-Origin', "*")
     res.send(korbit_ticker)
@@ -140,46 +126,73 @@ app.get('/korbit/ticker', function(req,res){
 
 app.get('/bittrex/ticker', function(req,res){
     res.header('Access-Control-Allow-Origin', "*")
-    // console.log('access logging');
     res.send(bittrex_ticker)
-
-    //
-    // let str = '';
-    // let options = {
-    //     host: 'bittrex.com',
-    //     path: '/api/v1.1/public/getmarketsummaries',
-    //     method:'GET',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // }
-    //
-    // const callback = (resp) => {
-    //     resp.on('data', function (chunk){
-    //         str += chunk;
-    //     })
-    //
-    //     resp.on('end', function() {
-    //         // console.log(str)
-    //         res.send(str)
-    //     })
-    // }
-    //
-    // var req = http.request(options, callback);
-    //
-    //
-    //
-    // req.on('error', function(e) {
-    //     console.log('ERROR: ' + e.message);
-    // });
-    //
-    // req.end();
 })
 
-// app.get('/test', (req,res) => {
-//     res.send('test');
-//     console.log('test')
-// })
+// const checkUserKey = (req, res, next)=>{
+//     if(req.body.user_key !== undefined){
+//         next();
+//     }else{
+//         res.status(500).send({ error: 'user_key is undefined' });
+//     }
+// };
+
+
+app.post('/friend', (req, res) => {
+    // const user_key = req.body.user_key;
+    // console.log(`${user_key}님이 쳇팅방에 참가했습니다.`);
+
+    res.set({
+        'content-type': 'application/json'
+    }).send(JSON.stringify({success: true}));
+});
+
+app.post('/message',(req,res) => {
+    console.log(req.body)
+    console.log("BODY!")
+
+    const _obj = {
+        // user_key: req.body.user_key,
+        type: req.body.type,
+        content: req.body.content
+    };
+    let massage = {
+        "message": {
+            "text": '응답 메세지...'
+        },
+        "keyboard": {
+            "type": "buttons",
+            "buttons": [
+                "메뉴1",
+                "메뉴2",
+                "메뉴3"
+            ]
+        }
+    };
+    res.set({
+        'content-type': 'application/json'
+    }).send(JSON.stringify(massage));
+})
+
+app.get('/keyboard', (req, res) => {
+    const menu = {
+        type: 'text',
+        buttons: ["메뉴1", "메뉴2", "메뉴3"]
+    };
+
+    res.set({
+        'content-type': 'application/json'
+    }).send(JSON.stringify(menu));
+});
+
+app.delete('/friend', (req, res) => {
+    const user_key = req.body.user_key;
+    console.log(`${user_key}님이 쳇팅방을 차단했습니다.`);
+
+    res.set({
+        'content-type': 'application/json'
+    }).send(JSON.stringify({success: true}));
+});
 
 
 const server = app.listen(port, () => console.log(`Express listening on port:${port}`))

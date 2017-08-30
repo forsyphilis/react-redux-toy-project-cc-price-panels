@@ -60,9 +60,7 @@ function tickerParse(exchange, data) {
             }
         }
         case 'bittrex':{
-            console.log(result)
             let result = data.result
-
             let r = {
                 btc:{
                     last: _.find(result, {'MarketName':'USDT-BTC'}).Last.toFixed(4),
