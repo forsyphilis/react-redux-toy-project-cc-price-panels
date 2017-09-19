@@ -3,6 +3,9 @@
     express + react + redux
     Create React App 을 사용해 생성함
 
+### Sample
+[Sample Page link](http://pchecker.ap-northeast-2.elasticbeanstalk.com/)
+
 ### Build
     npm run build
 
